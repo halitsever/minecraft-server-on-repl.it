@@ -20,7 +20,7 @@ Enter the repl you created for the web server, open the apikeyforweb key here in
 
 <img src="https://i.ibb.co/Vvtmbxq/Screenshot-from-2021-07-13-16-29-23.png"> 
 
-The last thing we need to do after installation <a href="https://www.spigotmc.org/resources/drivebackupv2.79519/">DriveBackupV2 </a>plugin install. Download the jar file from here and upload it to server/plugins.<br> Then here <a href="https://github.com/halitsever/minecraft-server-replit/blob/main/Minecraft-Server-Installer/server/plugins/DriveBackupV2/config.yml">config file Replace the default config file. 
+The last thing we need to do after installation <a href="https://www.spigotmc.org/resources/drivebackupv2.79519/">DriveBackupV2 </a>plugin install. Download the jar file from here and upload it to server/plugins.<br> Then here <a href="https://github.com/halitsever/minecraft-server-on-repl.it/blob/main/Minecraft-Server-Installer/server/plugins/DriveBackupV2/config.yml">config file Replace the default config file. 
   </a><br>
 If you typed Apikey correctly, the server will write on the site you typed into the getrequest.py.
 
