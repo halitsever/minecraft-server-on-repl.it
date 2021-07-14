@@ -36,15 +36,15 @@ def downloadFromDropbox(filename, dropboxpath):
 def downloadMap():
   if (installed == True):
     if os.path.exists('./server/plugins/DriveBackupV2/DropboxCredential.json'):
-      os.system("rm -rf ./world.zip, ./plugins.zip")
+      os.system("rm -rf ./world.zip ./plugins.zip")
       os.system("rm -rf ./server/logs") # I added this line to save more space. You can delete it if you want.
       mapfilepath = dbx.files_list_folder('/Apps/DriveBackup/backups/world/').entries[0].path_lower
       pluginsfilepath = dbx.files_list_folder('/Apps/DriveBackup/backups/plugins/').entries[0].path_lower
-      os.system("rm -rf ./server/plugins, ./server/world")
+      os.system("rm -rf ./server/plugins ./server/world")
       downloadFromDropbox("world.zip", mapfilepath)
       downloadFromDropbox("plugins.zip", pluginsfilepath)
       print("Plugins downloaded from dropbox")
-      os.system("rm -rf ./world.zip, ./plugins.zip")
+      os.system("rm -rf ./world.zip ./plugins.zip")
       print("Downloanded zips extracted and deleted")
 
 
@@ -91,7 +91,6 @@ def runServer():
 
 try:
   f = open("server-is-installed")
-  write("server-is-installed","If this file is here, the server is installed. If you want to reinstall the server, then delete this file.")
   f.close
 except:
   installed = False
@@ -99,7 +98,7 @@ except:
 ngrok_token.refreshToken()
 
 if installed == False:
-  os.system("rm -rf server, server.jar")
+  os.system("rm -rf server server.jar")
   write("server-is-installed","If this file is here, the server is installed. If you want to reinstall the server, then delete this file.")
   runServer()
 else:
