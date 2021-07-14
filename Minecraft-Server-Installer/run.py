@@ -16,30 +16,33 @@ def write(filename,content):
   f.write(str(content))
   f.close()
 
+if os.path.exists('./server/plugins/DriveBackupV2/DropboxCredential.json'):
+  try:
+    import dropbox
+  except:
+    os.system("pip install dropbox")
+    import dropbox
+
+  dbx = dropbox.Dropbox(os.getenv('Dropbox_Token'))
+
+
 def downloadFromDropbox(filename, dropboxpath):
   with open(filename, "wb") as f:
     metadata, res = dbx.files_download(dropboxpath)
     f.write(res.content)
     with zipfile.ZipFile(filename,"r") as zipextract:
       zipextract.extractall("./server")
-      print(filename + " downloaded from dropbox")
 
 def downloadMap():
   if (installed == True):
-    if (os.path.isfile('./server/plugins/DriveBackupV2/DropboxCredential.json') == True):
+    if os.path.exists('./server/plugins/DriveBackupV2/DropboxCredential.json'):
       os.system("rm -rf ./world.zip, ./plugins.zip")
       os.system("rm -rf ./server/logs") # I added this line to save more space. You can delete it if you want.
-      try:
-        import dropbox
-      except:
-        os.system("pip install dropbox")
-        import dropbox
-      os.system("rm -rf ./server/plugins, ./server/world")
-      dbx = dropbox.Dropbox(os.getenv('Dropbox_Token'))
       mapfilepath = dbx.files_list_folder('/Apps/DriveBackup/backups/world/').entries[0].path_lower
       pluginsfilepath = dbx.files_list_folder('/Apps/DriveBackup/backups/plugins/').entries[0].path_lower
-      downloadFromDropbox("world.zip")
-      downloadFromDropbox("plugins.zip")
+      os.system("rm -rf ./server/plugins, ./server/world")
+      downloadFromDropbox("world.zip", mapfilepath)
+      downloadFromDropbox("plugins.zip", pluginsfilepath)
       print("Plugins downloaded from dropbox")
       os.system("rm -rf ./world.zip, ./plugins.zip")
       print("Downloanded zips extracted and deleted")
@@ -60,13 +63,18 @@ def downloadNgrok():
 
 
 def runServer():
-  if (os.path.isfile("./server.jar") == False):
+  print(os.path.exists("./server.jar"))
+  if os.path.exists("./server.jar"):
+    print("Server.jar running...")
+  else:
     downloadPaperMC()
   downloadMap()
-  if (os.path.isfile("./ngrok") == False):
+  if os.path.exists("./ngrok"):
+    print("Ngrok running...")
+  else:
     downloadNgrok()
     os.system("chmod 777 ./ngrok")
-  time.sleep(1)
+  time.sleep(5)
   os.system("./ngrok tcp 25565 >/dev/null &")
   time.sleep(10)
   os.system("curl http://localhost:4040/api/tunnels > tunnels.json")
@@ -93,6 +101,7 @@ ngrok_token.refreshToken()
 
 if installed == False:
   os.system("rm -rf server, server.jar")
+  write("server-is-installed","If this file is here, the server is installed. If you want to reinstall the server, then delete this file.")
   runServer()
 else:
   runServer()
