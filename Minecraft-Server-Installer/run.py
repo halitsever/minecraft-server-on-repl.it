@@ -1,7 +1,7 @@
 import os, json, time, ngrok_token, zipfile
 
 SERVER_VERSION = "1.16.5"
-
+ngrok_region = "eu"
 javaArgs = "-Xms2048M -Xmx2048M -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true" 
 
 # You can adjust the ram size by changing the -Xms<ram_mb>M -Xmx<ram_mb>M lines. I also recommend looking here: https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/ If you don't have a hacker plan, change it to 200mb but remember that lag will be too much.
@@ -63,7 +63,6 @@ def downloadNgrok():
 
 
 def runServer():
-  print(os.path.exists("./server.jar"))
   if os.path.exists("./server.jar"):
     print("Server.jar running...")
   else:
@@ -75,7 +74,7 @@ def runServer():
     downloadNgrok()
     os.system("chmod 777 ./ngrok")
   time.sleep(5)
-  os.system("./ngrok tcp 25565 >/dev/null &")
+  os.system("./ngrok --region= " + ngrok_region +" tcp 25565 >/dev/null &")
   time.sleep(10)
   os.system("curl http://localhost:4040/api/tunnels > tunnels.json")
   with open('tunnels.json') as data_file:
