@@ -72,9 +72,8 @@ def runServer():
     print("Ngrok running...")
   else:
     downloadNgrok()
-    os.system("chmod 777 ./ngrok")
-  time.sleep(5)
-  os.system("./ngrok --region= " + ngrok_region +" tcp 25565 >/dev/null &")
+  os.system("chmod 777 ./ngrok")
+  os.system("./ngrok tcp --region=" + ngrok_region +" 25565 >/dev/null &")
   time.sleep(10)
   os.system("curl http://localhost:4040/api/tunnels > tunnels.json")
   with open('tunnels.json') as data_file:
@@ -82,6 +81,7 @@ def runServer():
       datajson = json.load(data_file)
     except:
       print("")
+  time.sleep(10)
   os.system("echo {url} > url.txt".format(url=datajson['tunnels'][-1]["public_url"].replace("tcp://","")))
   os.system("python3 getrequest.py >/dev/null &") # This line is for the webserver. See the getrequest.py file to understand the code.
   os.chdir("server")
