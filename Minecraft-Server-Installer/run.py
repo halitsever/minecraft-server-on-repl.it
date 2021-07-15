@@ -37,10 +37,10 @@ def downloadMap():
   if (installed == True):
     if os.path.exists('./server/plugins/DriveBackupV2/DropboxCredential.json'):
       os.system("rm -rf ./world.zip ./plugins.zip")
+      os.system("rm -rf ./server/plugins ./server/world")
       os.system("rm -rf ./server/logs") # I added this line to save more space. You can delete it if you want.
       mapfilepath = dbx.files_list_folder('/Apps/DriveBackup/backups/world/').entries[0].path_lower
       pluginsfilepath = dbx.files_list_folder('/Apps/DriveBackup/backups/plugins/').entries[0].path_lower
-      os.system("rm -rf ./server/plugins ./server/world")
       downloadFromDropbox("world.zip", mapfilepath)
       downloadFromDropbox("plugins.zip", pluginsfilepath)
       print("Plugins downloaded from dropbox")
